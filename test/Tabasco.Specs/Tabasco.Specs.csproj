@@ -31,12 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GivenFramework">
+      <HintPath>..\..\lib\given\GivenFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>..\..\lib\nunit\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\LibraryController.cs" />
+    <Compile Include="Controllers\book\FictionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutePilot_Specs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tabasco\Tabasco.csproj">
