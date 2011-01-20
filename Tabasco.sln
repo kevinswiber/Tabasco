@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tabasco", "src\Tabasco\Tabasco.csproj", "{57A6A9B9-8073-4719-AFBF-987CA69D65C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tabasco.Specs", "test\Tabasco.Specs\Tabasco.Specs.csproj", "{17F7D65A-568C-43D7-AF9B-4182BC489F5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tabasco.Example", "example\Tabasco.Example\Tabasco.Example.csproj", "{BAE83293-F016-48A2-A031-CC30B281CFE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57A6A9B9-8073-4719-AFBF-987CA69D65C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A6A9B9-8073-4719-AFBF-987CA69D65C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A6A9B9-8073-4719-AFBF-987CA69D65C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A6A9B9-8073-4719-AFBF-987CA69D65C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F7D65A-568C-43D7-AF9B-4182BC489F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F7D65A-568C-43D7-AF9B-4182BC489F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F7D65A-568C-43D7-AF9B-4182BC489F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F7D65A-568C-43D7-AF9B-4182BC489F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE83293-F016-48A2-A031-CC30B281CFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE83293-F016-48A2-A031-CC30B281CFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE83293-F016-48A2-A031-CC30B281CFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE83293-F016-48A2-A031-CC30B281CFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
