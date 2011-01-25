@@ -45,9 +45,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionLoader_Specs.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
-    <Compile Include="Controllers\book\FictionController.cs" />
+    <Compile Include="Controllers\FictionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceLoader_Specs.cs" />
     <Compile Include="RoutePilot_Specs.cs" />
   </ItemGroup>
   <ItemGroup>
