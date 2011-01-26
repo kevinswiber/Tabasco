@@ -6,7 +6,18 @@ namespace Tabasco
 {
     public class ResourceLoader
     {
-        public IEnumerable<Type> LoadFromAssemblies()
+        public static Dictionary<Type, string> LoadResourceMap()
+        {
+            var types = LoadFromAssemblies();
+            IEnumerable<KeyValuePair<Type, string>> resourceMap = new Dictionary<Type, string>();
+
+            resourceMap = types.Aggregate(resourceMap,
+                                          (current, resource) => current.Concat(new[] { CreateResourceMapItem(resource) }));
+
+            return resourceMap.ToDictionary(pair => pair.Key, pair => pair.Value);
+        }
+
+        private static IEnumerable<Type> LoadFromAssemblies()
         {
             return AssemblyScanner.FindPublicTypesInBaseDirectory(FilterResourceAttributes);
         }
@@ -18,22 +29,11 @@ namespace Tabasco
             return typesWithResourceAttribute.Any();
         }
 
-        public Dictionary<string, Type> LoadResourceMap()
-        {
-            var types = LoadFromAssemblies();
-            IEnumerable<KeyValuePair<string, Type>> resourceMap = new Dictionary<string, Type>();
-
-            resourceMap = types.Aggregate(resourceMap,
-                                          (current, resource) => current.Concat(new[] { CreateResourceMapItem(resource) }));
-
-            return resourceMap.ToDictionary(pair => pair.Key, pair => pair.Value);
-        }
-
-        private KeyValuePair<string, Type> CreateResourceMapItem(Type resource)
+        private static KeyValuePair<Type, string> CreateResourceMapItem(Type resource)
         {
             var resourceAttribute = (ResourceAttribute)resource.GetCustomAttributes(typeof(ResourceAttribute), false).First();
 
-            return new KeyValuePair<string, Type>(resourceAttribute.ResourceRoute, resource);
+            return new KeyValuePair<Type, string>(resource, resourceAttribute.ResourceRoute);
         }
     }
 }

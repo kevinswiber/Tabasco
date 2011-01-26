@@ -7,8 +7,10 @@ namespace Tabasco
 {
     public class ActionLoader
     {
-        public IDictionary<string, MethodInfo> LoadActionMap(IEnumerable<Type> types)
+        public static IDictionary<string, MethodInfo> LoadActionMap(IDictionary<Type, string> resourceMap)
         {
+            var types = resourceMap.Keys;
+
             /*
              * 1. Return action methods for each type.
              * 2. Remove empties.
@@ -22,7 +24,7 @@ namespace Tabasco
             IEnumerable<KeyValuePair<string, MethodInfo>> actionMap = new Dictionary<string, MethodInfo>();
 
             // Add a newly created key-value pair to actionMap for each action
-            actionMap = actions.Aggregate(actionMap, (current, action) => current.Concat(CreateActionMapItems(action)));
+            actionMap = actions.Aggregate(actionMap, (current, action) => current.Concat(CreateActionMapItems(resourceMap, action)));
 
             return actionMap.ToDictionary(pair => pair.Key, pair => pair.Value);
         }
@@ -30,16 +32,23 @@ namespace Tabasco
         private static IEnumerable<MethodInfo> GetActions(Type type)
         {
             return type.GetMethods().Where(
-                methodInfo => methodInfo.GetCustomAttributes(typeof(GetAttribute), false).Any());
+                methodInfo => methodInfo
+                    .GetCustomAttributes(false)
+                    .Where(attr => typeof(ActionAttribute).IsAssignableFrom(attr.GetType()))
+                    .Any());
         }
 
-        private static IEnumerable<KeyValuePair<string, MethodInfo>> CreateActionMapItems(MethodInfo action)
+        private static IEnumerable<KeyValuePair<string, MethodInfo>> CreateActionMapItems(IDictionary<Type, string> resourceMap, MethodInfo action)
         {
-            var actionAttributes = action.GetCustomAttributes(typeof(GetAttribute), false);
+            var actionAttributes =
+                action.GetCustomAttributes(false).Where(
+                    attr => typeof(ActionAttribute).IsAssignableFrom(attr.GetType()));
+
+            var resourceRoute = resourceMap[action.DeclaringType];
 
             return
-                from GetAttribute actionAttr in actionAttributes
-                select new KeyValuePair<string, MethodInfo>(actionAttr.ActionRoute, action);
+                from ActionAttribute actionAttr in actionAttributes
+                select new KeyValuePair<string, MethodInfo>(resourceRoute + actionAttr.ActionRoute, action);
         }
     }
 }

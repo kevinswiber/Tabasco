@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Tabasco.Specs.Controllers;
 
 namespace Tabasco.Specs
 {
@@ -6,13 +7,11 @@ namespace Tabasco.Specs
     public class ActionLoader_Specs
     {
         [Test]
-        public void It_Returns_An_Action_Map_From_Resources_Keyed_By_Route()
+        public void It_Returns_A_Method_From_A_Route()
         {
-            var loader = new ActionLoader();
+            var actionMap = ActionLoader.LoadActionMap(ResourceLoader.LoadResourceMap());
 
-            var actionMap = loader.LoadActionMap(new ResourceLoader().LoadFromAssemblies());
-
-            Assert.IsTrue(actionMap.ContainsKey("/book/fiction/*"));
+            Assert.AreEqual(typeof(FictionController).GetMethod("Create"), actionMap[@"/book/fiction/create"]);
         }
     }
 }

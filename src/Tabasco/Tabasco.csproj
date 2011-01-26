@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="ActionLoader.cs" />
     <Compile Include="AssemblyScanner.cs" />
-    <Compile Include="GetAttribute.cs" />
+    <Compile Include="ActionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAttribute.cs" />
     <Compile Include="ResourceLoader.cs" />
