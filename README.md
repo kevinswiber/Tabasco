@@ -4,26 +4,26 @@ Tabasco is a simple Web framework that drops a little spice on top of NRack.
 
 Example
 ---------
-  [Resource("/")]
-  public class Main
-  {
-    [Get]
-    public string Root()
+    [Resource("/")]
+    public class Main
     {
-      return "Hello, Tabasco!";
-    }
+      [Get]
+      public string Root()
+      {
+        return "Hello, Tabasco!";
+      }
 
-    [Get("/doctor")]
-    public dynamic[] Pepper()
-    {
-      return new dynamic[]
-       {
-         200, 
-         new Hash { { "Content-Type", "text/plain" } }, 
-         "Wouldn't you like to be a pepper, too?"
-       };
+      [Get("/doctor")]
+      public dynamic[] Pepper()
+      {
+        return new dynamic[]
+         {
+           200, 
+           new Hash { { "Content-Type", "text/plain" } }, 
+           "Wouldn't you like to be a pepper, too?"
+         };
+      }
     }
-  }
 
 Philosophy
 ----------
