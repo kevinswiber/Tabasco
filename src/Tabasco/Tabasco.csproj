@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAttribute.cs" />
     <Compile Include="ResourceLoader.cs" />
-    <Compile Include="RoutePilot.cs" />
+    <Compile Include="TabascoApplication.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

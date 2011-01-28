@@ -31,11 +31,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\lib\nrack\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Kayak">
+      <HintPath>..\..\lib\nrack\Kayak.dll</HintPath>
+    </Reference>
+    <Reference Include="NRack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\nrack\NRack.dll</HintPath>
+    </Reference>
+    <Reference Include="NRackup">
+      <HintPath>..\..\lib\nrack\NRackup.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
