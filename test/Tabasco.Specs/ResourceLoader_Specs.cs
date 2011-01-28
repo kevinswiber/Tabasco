@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Tabasco.Specs.Controllers;
 
 namespace Tabasco.Specs
 {
@@ -11,7 +10,7 @@ namespace Tabasco.Specs
         {
             var resourceMap = ResourceLoader.LoadResourceMap();
 
-            Assert.AreEqual("/book/fiction", resourceMap[typeof(FictionController)]);
+            Assert.AreEqual("/book/fiction", resourceMap[typeof(Fiction)]);
         }
     }
 }

@@ -48,7 +48,27 @@ namespace Tabasco
 
             return
                 from ActionAttribute actionAttr in actionAttributes
-                select new KeyValuePair<string, MethodInfo>(resourceRoute + actionAttr.ActionRoute, action);
+                select new KeyValuePair<string, MethodInfo>(FormatRoute(GetHttpMethod(actionAttr.GetType()), resourceRoute, actionAttr.ActionRoute), action);
+        }
+
+        private static string FormatRoute(string method, string resourceRoute, string actionRoute)
+        {
+            if (resourceRoute.EndsWith("/"))
+            {
+                resourceRoute = resourceRoute.Remove(resourceRoute.Length - 1);
+            }
+
+            if (!actionRoute.StartsWith("/"))
+            {
+                actionRoute = "/" + actionRoute;
+            }
+
+            return method + " " + resourceRoute + actionRoute;
+        }
+
+        private static string GetHttpMethod(Type actionAttributeType)
+        {
+            return actionAttributeType.Name.Replace("Attribute", string.Empty).ToUpperInvariant();
         }
     }
 }

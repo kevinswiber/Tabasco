@@ -1,7 +1,7 @@
-﻿namespace Tabasco.Specs.Controllers
+﻿namespace Tabasco.Specs
 {
     [Resource("/book/fiction")]
-    public class FictionController
+    public class Fiction
     {
         [Get("/")]
         public string Root(string splat)
