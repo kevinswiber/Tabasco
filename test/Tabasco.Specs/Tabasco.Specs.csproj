@@ -49,6 +49,7 @@
     <Compile Include="Fiction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader_Specs.cs" />
+    <Compile Include="RequestLine_Specs.cs" />
     <Compile Include="TabascoApplication_Specs.cs" />
   </ItemGroup>
   <ItemGroup>

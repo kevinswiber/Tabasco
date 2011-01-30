@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NRack.Helpers;
 
 namespace Tabasco.Example
@@ -12,7 +13,7 @@ namespace Tabasco.Example
         }
 
         [Get("/doctor")]
-        public dynamic[] Pepper()
+        public dynamic[] Pepper(IDictionary<string, string> data)
         {
             return new dynamic[]
                        {

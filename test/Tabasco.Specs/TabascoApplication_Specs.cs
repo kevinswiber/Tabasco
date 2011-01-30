@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NRack;
 using NRack.Helpers;
 using NRack.Mock;
@@ -8,36 +9,39 @@ namespace Tabasco.Specs
     [TestFixture]
     public class TabascoApplication_Specs
     {
-        public class TestApp : TabascoApplication
-        {
-
-        }
-
         [Test]
-        public void It_Should_Be_Callable()
+        public void It_Is_Callable()
         {
             Assert.IsTrue(typeof(ICallable).IsAssignableFrom(typeof(TabascoApplication)));
         }
 
         [Test]
-        public void It_Should_Process_Requests()
+        public void It_Processes_Requests()
         {
-            var response = new MockRequest(new TestApp()).Get("/");
+            var response = new MockRequest(new TabascoApplication()).Get("/");
 
             Assert.AreEqual(200, response.Status);
             Assert.AreEqual("Bam!", response.Body.ToString());
         }
 
         [Test]
-        public void It_Should_Load_As_NRack_Application()
+        public void It_Loads_As_An_NRack_Application()
         {
             var builder = new Builder()
-                .Run(new TestApp())
+                .Run(new TabascoApplication())
                 .ToApp();
 
             var response = builder.Call(new MockRequest().EnvironmentFor("/"));
             Assert.AreEqual(200, response[0]);
             Assert.AreEqual("Bam!", response[2].ToString());
+        }
+
+        [Test]
+        public void It_Passes_Query_String_Data_Into_Action()
+        {
+            var response = new MockRequest(new TabascoApplication()).Get("/data?testData=horticulture");
+
+            Assert.AreEqual("horticulture", response.Body.ToString());
         }
     }
 
@@ -48,6 +52,12 @@ namespace Tabasco.Specs
         public dynamic[] GetSpicy()
         {
             return new dynamic[] { 200, new Hash { { "Content-Type", "text/html" } }, "Bam!" };
+        }
+
+        [Get("/data")]
+        public string GetData(IDictionary<string, string> data)
+        {
+            return data["testData"];
         }
     }
 }
