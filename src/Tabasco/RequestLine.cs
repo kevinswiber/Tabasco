@@ -51,9 +51,9 @@ namespace Tabasco
 
         public string GetUri()
         {
-            QueryString = QueryString == string.Empty ? string.Empty : "?" + QueryString;
+            var queryString = QueryString == string.Empty ? string.Empty : "?" + QueryString;
 
-            var uri = ScriptName + PathInfo + QueryString;
+            var uri = ScriptName + PathInfo + queryString;
 
             if (!uri.StartsWith("/"))
             {

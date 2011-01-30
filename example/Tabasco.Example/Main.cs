@@ -15,11 +15,13 @@ namespace Tabasco.Example
         [Get("/doctor")]
         public dynamic[] Pepper(IDictionary<string, string> data)
         {
+            var who = data.ContainsKey("who") ? data["who"] : "you";
+
             return new dynamic[]
                        {
                            200, 
                            new Hash { { "Content-Type", "text/plain" } }, 
-                           "Wouldn't you like to be a pepper, too?"
+                           "Wouldn't " + who + " like to be a pepper, too?"
                        };
         }
     }
