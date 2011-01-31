@@ -43,6 +43,15 @@ namespace Tabasco.Specs
 
             Assert.AreEqual("horticulture", response.Body.ToString());
         }
+
+        [Test]
+        public void It_Passes_Form_Post_Data_Into_Action()
+        {
+            var response = new MockRequest(new TabascoApplication()).Post("/post",
+                                                                         new Dictionary<string, dynamic> { { "input", "testData=horticulture" } });
+
+            Assert.AreEqual("horticulture", response.Body.ToString());
+        }
     }
 
     [Resource("/")]
@@ -56,6 +65,12 @@ namespace Tabasco.Specs
 
         [Get("/data")]
         public string GetData(IDictionary<string, string> data)
+        {
+            return data["testData"];
+        }
+
+        [Post("/post")]
+        public string PostData(IDictionary<string, string> data)
         {
             return data["testData"];
         }

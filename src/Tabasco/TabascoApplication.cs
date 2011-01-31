@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using NRack;
 using NRack.Helpers;
 
@@ -36,13 +38,39 @@ namespace Tabasco
             {
                 if (methodInfo.GetParameters()[0].ParameterType == typeof(IDictionary<string, string>))
                 {
-                    var data = Utils.ParseQuery(requestLine.QueryString);
+                    NameValueCollection queryStringData = null;
+
+                    if (!string.IsNullOrEmpty(requestLine.QueryString))
+                    {
+                        queryStringData = Utils.ParseQuery(requestLine.QueryString);
+                    }
 
                     var dataDictionary = new Dictionary<string, string>();
 
-                    foreach (var key in data.Keys)
+                    if (queryStringData != null)
                     {
-                        dataDictionary[key.ToString()] = data[key.ToString()];
+                        foreach (var key in queryStringData.Keys)
+                        {
+                            dataDictionary[key.ToString()] = queryStringData[key.ToString()];
+                        }
+                    }
+
+                    if (environment["rack.input"] != null)
+                    {
+                        var stream = (MemoryStream)environment["rack.input"];
+
+                        stream.Position = 0;
+
+                        var streamReader = new StreamReader(stream);
+
+                        var requestBody = streamReader.ReadToEnd();
+
+                        var postData = Utils.ParseQuery(requestBody);
+
+                        foreach (var key in postData.Keys)
+                        {
+                            dataDictionary[key.ToString()] = postData[key.ToString()];
+                        }
                     }
 
                     parameters = new[] { dataDictionary };
