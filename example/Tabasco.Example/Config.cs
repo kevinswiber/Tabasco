@@ -1,4 +1,8 @@
+using System;
+using System.IO;
+using NRack;
 using NRack.Configuration;
+using NRack.Helpers;
 
 namespace Tabasco.Example
 {
@@ -8,7 +12,12 @@ namespace Tabasco.Example
 
         public override void Start()
         {
-            Run(new TabascoApplication());
+            Use<Static>(new Hash
+                            {
+                                {"urls", new[] {"/styles"}}, 
+                                {"root", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public")}
+                            })
+            .Run(new TabascoApplication());
         }
 
         #endregion

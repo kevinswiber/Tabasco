@@ -7,7 +7,10 @@ namespace Tabasco.Example
     public class Main
     {
         const string HtmlSkeleton = @"<html>
-                                        <head><title>Super Tabasco Example</title></head>
+                                        <head>
+                                            <title>Super Tabasco Example</title>
+                                            <link href='/styles/site.css' rel='stylesheet' type='text/css' media='screen' />
+                                        </head>
                                         <body>{0}</body>
                                       </html>";
 
