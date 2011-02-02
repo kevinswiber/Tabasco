@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NRack.Helpers;
 
 namespace Tabasco.Example
@@ -5,20 +6,47 @@ namespace Tabasco.Example
     [Resource("/")]
     public class Main
     {
+        const string HtmlSkeleton = @"<html>
+                                        <head><title>Super Tabasco Example</title></head>
+                                        <body>{0}</body>
+                                      </html>";
+
         [Get]
         public string Root()
         {
-            return "Hello, Tabasco!";
+
+            const string header = "<h1>Hello, Tabasco!</h1><br/>";
+
+            const string form = @"<form method='post' action='/name'>
+                                    <label for='name'>What's your name?</label><br/>
+                                    <input type='text' name='name'/><br/><br/>
+                                    <input type='submit'/>
+                                  </form>";
+
+            return string.Format(HtmlSkeleton, header + form);
+        }
+
+        [Post("/name")]
+        public string Name(IDictionary<string, string> data)
+        {
+            var name = data["name"];
+
+            var header = string.Format("<h1>Ahoy, {0}!</h1>", name);
+            var link = "<a href='/doctor?who='" + name + "'>Click to see your secret message.</a>";
+
+            return string.Format(HtmlSkeleton, header + link);
         }
 
         [Get("/doctor")]
-        public dynamic[] Pepper()
+        public dynamic[] Pepper(IDictionary<string, string> data)
         {
+            var who = data.ContainsKey("who") ? data["who"] : "you";
+
             return new dynamic[]
                        {
                            200, 
                            new Hash { { "Content-Type", "text/plain" } }, 
-                           "Wouldn't you like to be a pepper, too?"
+                           "Wouldn't " + who + " like to be a pepper, too?"
                        };
         }
     }

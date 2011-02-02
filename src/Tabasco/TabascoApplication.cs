@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using NRack;
 using NRack.Helpers;
 
@@ -18,36 +20,64 @@ namespace Tabasco
             string scriptName = environment["SCRIPT_NAME"].ToString();
             string pathInfo = environment["PATH_INFO"].ToString();
             string queryString = environment["QUERY_STRING"].ToString();
-            queryString = queryString == string.Empty ? string.Empty : "?" + queryString;
 
-            if (scriptName.EndsWith("/"))
+            var requestLine = RequestLine.Create(method, scriptName, pathInfo, queryString);
+
+            if (!actionMap.ContainsKey(requestLine.ToString().StripQueryString()))
             {
-                scriptName = scriptName.Remove(scriptName.Length - 1);
+                return new dynamic[] { 404, new Hash { { "Content-Type", "text/plain" } }, "Not found: " + requestLine.GetUri().StripQueryString() };
             }
 
-            if (!pathInfo.StartsWith("/"))
-            {
-                pathInfo = "/" + pathInfo;
-            }
-
-            var path = scriptName + pathInfo + queryString;
-
-            if (!path.StartsWith("/"))
-            {
-                path = "/" + path;
-            }
-
-            var key = method + " " + path;
-
-            if (!actionMap.ContainsKey(key))
-            {
-                return new dynamic[] { 404, new Hash { { "Content-Type", "text/plain" } }, "Not found: " + path };
-            }
-
-            var methodInfo = actionMap[method + " " + path];
+            var methodInfo = actionMap[requestLine.ToString().StripQueryString()];
 
             var resource = Activator.CreateInstance(methodInfo.DeclaringType);
-            var actionResponse = methodInfo.Invoke(resource, null);
+
+            object[] parameters = null;
+
+            if (methodInfo.GetParameters().Length > 0)
+            {
+                if (methodInfo.GetParameters()[0].ParameterType == typeof(IDictionary<string, string>))
+                {
+                    NameValueCollection queryStringData = null;
+
+                    if (!string.IsNullOrEmpty(requestLine.QueryString))
+                    {
+                        queryStringData = Utils.ParseQuery(requestLine.QueryString);
+                    }
+
+                    var dataDictionary = new Dictionary<string, string>();
+
+                    if (queryStringData != null)
+                    {
+                        foreach (var key in queryStringData.Keys)
+                        {
+                            dataDictionary[key.ToString()] = queryStringData[key.ToString()];
+                        }
+                    }
+
+                    if (environment["rack.input"] != null)
+                    {
+                        var stream = (MemoryStream)environment["rack.input"];
+
+                        stream.Position = 0;
+
+                        var streamReader = new StreamReader(stream);
+
+                        var requestBody = streamReader.ReadToEnd();
+
+                        var postData = Utils.ParseQuery(requestBody);
+
+                        foreach (var key in postData.Keys)
+                        {
+                            dataDictionary[key.ToString()] = postData[key.ToString()];
+                        }
+                    }
+
+                    parameters = new[] { dataDictionary };
+                }
+            }
+
+            var actionResponse = methodInfo.Invoke(resource, parameters);
 
             if (actionResponse is string)
             {
