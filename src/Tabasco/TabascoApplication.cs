@@ -57,7 +57,7 @@ namespace Tabasco
 
                     if (environment["rack.input"] != null)
                     {
-                        var stream = (MemoryStream)environment["rack.input"];
+                        var stream = (Stream)environment["rack.input"];
 
                         stream.Position = 0;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NRack.Helpers;
 
-namespace Tabasco.Example
+namespace Tabasco.Example.AspNet
 {
     [Resource("/")]
     public class Main
@@ -15,6 +15,7 @@ namespace Tabasco.Example
                                       </html>";
 
         [Get]
+        [Get("/default.aspx")]
         public string Root()
         {
 
