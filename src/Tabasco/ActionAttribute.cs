@@ -2,6 +2,7 @@ using System;
 
 namespace Tabasco
 {
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class ActionAttribute : Attribute
     {
         protected ActionAttribute() : this(string.Empty) { }

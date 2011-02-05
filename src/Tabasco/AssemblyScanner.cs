@@ -12,9 +12,17 @@ namespace Tabasco
         {
             var assemblyFiles =
                 new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
-                    .GetFiles("*.dll", SearchOption.AllDirectories)
-                    .Union(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
-                               .GetFiles("*.exe", SearchOption.AllDirectories));
+                    .GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                    .Concat(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
+                               .GetFiles("*.exe", SearchOption.TopDirectoryOnly));
+
+            if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin")))
+            {
+                assemblyFiles =
+                    assemblyFiles.Concat(
+                        new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"))
+                        .GetFiles("*.dll", SearchOption.TopDirectoryOnly));
+            }
 
             IEnumerable<Type> typesCollected = Type.EmptyTypes;
 
