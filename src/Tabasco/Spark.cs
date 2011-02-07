@@ -28,6 +28,12 @@ namespace Tabasco
             _model = model;
         }
 
+        public IView Template(string viewPath)
+        {
+            _viewPath = viewPath;
+            return this;
+        }
+
         public void Each(Action<dynamic> action)
         {
             string viewPath;
@@ -104,12 +110,7 @@ namespace Tabasco
             return template;
         }
 
-        /// <summary>
-        /// Helper method for getting the name of the method that got us here
-        /// </summary>
-        /// <param name="currentMethod"></param>
-        /// <returns></returns>
-        private string GetPreviousMethodName(MethodBase currentMethod = null)
+        private static string GetPreviousMethodName(MethodBase currentMethod = null)
         {
             var methodName = string.Empty;
             try
@@ -151,12 +152,6 @@ namespace Tabasco
                 return string.Empty;
             }
             return methodName;
-        }
-
-        public IView Template(string viewPath)
-        {
-            _viewPath = viewPath;
-            return this;
         }
     }
 }
