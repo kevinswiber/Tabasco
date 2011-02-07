@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="models\Doctor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +82,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="views\name.cshtml" />
     <None Include="views\index.spark" />
-    <None Include="views\name.spark" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

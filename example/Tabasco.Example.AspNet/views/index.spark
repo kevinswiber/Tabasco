@@ -6,7 +6,7 @@
 <body>
     <h1>Hello, Tabasco!</h1><br/>
     <form method="post" action="/name">
-        <label for="name">What"s your name?</label><br/>
+        <label for="name">What's your name?</label><br/>
         <input type="text" name="name"/><br/><br/>
         <input type="submit"/>
     </form>
