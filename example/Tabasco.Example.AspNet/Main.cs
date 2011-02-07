@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NRack.Helpers;
-using Tabasco.Example.AspNet.models;
 
 namespace Tabasco.Example.AspNet
 {
@@ -17,9 +16,7 @@ namespace Tabasco.Example.AspNet
         [Post("/name")]
         public IView Name(IDictionary<string, string> data)
         {
-            var model = new Doctor { Name = data["name"] };
-
-            return new Spark(model);
+            return new Razor(new { Name = data["name"] });
         }
 
         [Get("/doctor")]

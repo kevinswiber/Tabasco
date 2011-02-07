@@ -51,6 +51,7 @@
     <Compile Include="ActionLoader_Specs.cs" />
     <Compile Include="Fiction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Razor_Specs.cs" />
     <Compile Include="ResourceLoader_Specs.cs" />
     <Compile Include="RequestLine_Specs.cs" />
     <Compile Include="Spark_Specs.cs" />
@@ -81,6 +82,22 @@
     <Content Include="views\viewpath_and_model_test.spark">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="views\empty.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="views\viewpath_and_model_test.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="views\viewpath_test.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="views\model.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
