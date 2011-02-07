@@ -1,0 +1,14 @@
+﻿<html>
+<head>
+    <title>Super Tabasco Example</title>
+    <link href="/styles/site.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+    <h1>Hello, Tabasco!</h1><br/>
+    <form method="post" action="/name">
+        <label for="name">What"s your name?</label><br/>
+        <input type="text" name="name"/><br/><br/>
+        <input type="submit"/>
+    </form>
+</body>
+</html>

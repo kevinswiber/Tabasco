@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Reflection;
 using NRack;
 using NRack.Helpers;
 
@@ -9,26 +10,32 @@ namespace Tabasco
 {
     public class TabascoApplication : ICallable
     {
+        private readonly IDictionary<string, MethodInfo> _actionMap;
+
+        public TabascoApplication()
+        {
+            var resourceMap = ResourceLoader.LoadResourceMap();
+            _actionMap = ActionLoader.LoadActionMap(resourceMap);
+        }
+
         #region Implementation of ICallable
 
         public dynamic[] Call(IDictionary<string, dynamic> environment)
         {
-            var resourceMap = ResourceLoader.LoadResourceMap();
-            var actionMap = ActionLoader.LoadActionMap(resourceMap);
-
             string method = environment["REQUEST_METHOD"].ToString();
             string scriptName = environment["SCRIPT_NAME"].ToString();
             string pathInfo = environment["PATH_INFO"].ToString();
             string queryString = environment["QUERY_STRING"].ToString();
 
             var requestLine = RequestLine.Create(method, scriptName, pathInfo, queryString);
+            var actionKey = requestLine.ToString().StripQueryString();
 
-            if (!actionMap.ContainsKey(requestLine.ToString().StripQueryString()))
+            if (!_actionMap.ContainsKey(actionKey))
             {
                 return new dynamic[] { 404, new Hash { { "Content-Type", "text/plain" } }, "Not found: " + requestLine.GetUri().StripQueryString() };
             }
 
-            var methodInfo = actionMap[requestLine.ToString().StripQueryString()];
+            var methodInfo = _actionMap[actionKey];
 
             var resource = Activator.CreateInstance(methodInfo.DeclaringType);
 
@@ -79,7 +86,7 @@ namespace Tabasco
 
             var actionResponse = methodInfo.Invoke(resource, parameters);
 
-            if (actionResponse is string)
+            if (actionResponse is string || actionResponse is IIterable)
             {
                 return new dynamic[] { 200, new Hash { { "Content-Type", "text/html" } }, actionResponse };
             }
