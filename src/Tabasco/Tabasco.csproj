@@ -34,6 +34,9 @@
     <Reference Include="NRack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\nrack\NRack.dll</HintPath>
     </Reference>
+    <Reference Include="Spark">
+      <HintPath>..\..\lib\spark\Spark.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,12 +45,15 @@
     <Compile Include="ActionLoader.cs" />
     <Compile Include="AssemblyScanner.cs" />
     <Compile Include="ActionAttribute.cs" />
+    <Compile Include="IView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAttribute.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="RequestLine.cs" />
+    <Compile Include="Spark.cs" />
     <Compile Include="TabascoApplication.cs" />
     <Compile Include="UriExtensions.cs" />
+    <Compile Include="ViewEngines\Spark\SparkView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
