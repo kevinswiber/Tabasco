@@ -10,7 +10,15 @@ namespace Tabasco.Specs
         {
             var actionMap = ActionLoader.LoadActionMap(ResourceLoader.LoadResourceMap());
 
-            Assert.AreEqual(typeof(Fiction).GetMethod("Create"), actionMap[@"POST /book/fiction/create"]);
+            Assert.AreEqual(typeof(Fiction).GetMethod("Create"), actionMap["POST /book/fiction/create"]);
+        }
+
+        [Test]
+        public void It_Returns_A_Root_Path_Without_A_Trailing_Slash()
+        {
+            var actionMap = ActionLoader.LoadActionMap(ResourceLoader.LoadResourceMap());
+
+            Assert.IsTrue(actionMap.ContainsKey("GET /book/fiction"));
         }
     }
 }
