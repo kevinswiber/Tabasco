@@ -63,7 +63,14 @@ namespace Tabasco
                 actionRoute = "/" + actionRoute;
             }
 
-            return method + " " + resourceRoute + actionRoute;
+            var fullPath = resourceRoute + actionRoute;
+
+            if (fullPath.EndsWith("/") && fullPath.Length > 1)
+            {
+                fullPath = fullPath.Remove(fullPath.Length - 1);
+            }
+
+            return string.Format("{0} {1}", method, fullPath);
         }
 
         private static string GetHttpMethod(Type actionAttributeType)

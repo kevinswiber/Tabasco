@@ -52,8 +52,25 @@ namespace Tabasco.Specs
 
             Assert.AreEqual("horticulture", response.Body.ToString());
         }
+
+        [Test]
+        public void It_Routes_To_Non_Root_Resources()
+        {
+            var response = new MockRequest(new TabascoApplication()).Get("/dork");
+
+            Assert.AreEqual(200, response.Status);
+        }
     }
 
+    [Resource("/dork")]
+    public class DorkController
+    {
+        [Get]
+        public string Root()
+        {
+            return "Yo.";
+        }
+    }
     [Resource("/")]
     public class TestController
     {

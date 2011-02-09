@@ -37,6 +37,11 @@ namespace Tabasco
                 pathInfo = "/" + pathInfo;
             }
 
+            if (pathInfo.EndsWith("/"))
+            {
+                pathInfo = pathInfo.Remove(pathInfo.Length - 1);
+            }
+
             var requestLine = new RequestLine
                                   {
                                       Method = method,

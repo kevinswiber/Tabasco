@@ -32,4 +32,14 @@ namespace Tabasco.Example.AspNet
                        };
         }
     }
+
+    [Resource("/dork")]
+    public class Dork
+    {
+        [Get]
+        public string Root()
+        {
+            return "<html><body><h1>Oh, Snap!</h1></body></html>";
+        }
+    }
 }
