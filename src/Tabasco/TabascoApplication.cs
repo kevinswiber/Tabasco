@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NRack;
 using NRack.Helpers;
@@ -17,6 +18,8 @@ namespace Tabasco
         {
             var resourceMap = ResourceLoader.GetResourceMap();
             _actionMap = ActionLoader.GetActionMap(resourceMap);
+            _actionMap = _actionMap.OrderByDescending(x => x.Key.Length).ToDictionary(pair => pair.Key,
+                                                                                      pair => pair.Value);
         }
 
         #region Implementation of ICallable
@@ -29,7 +32,24 @@ namespace Tabasco
             string queryString = environment["QUERY_STRING"].ToString();
 
             var requestLine = RequestLine.Create(method, scriptName, pathInfo, queryString);
-            var actionKey = requestLine.ToString().StripQueryString();
+            var requestLineStripped = requestLine.ToString().StripQueryString();
+
+            string actionKey = requestLineStripped;
+            IDictionary<string, string> routeParameters = new Dictionary<string, string>();
+
+            if (!_actionMap.ContainsKey(actionKey))
+            {
+                foreach (var key in _actionMap.Keys)
+                {
+                    var parser = new PatternParser(key);
+                    if (parser.IsMatch(requestLineStripped))
+                    {
+                        actionKey = key;
+                        routeParameters = parser.Match(requestLineStripped);
+                        break;
+                    }
+                }
+            }
 
             if (!_actionMap.ContainsKey(actionKey))
             {
@@ -54,6 +74,12 @@ namespace Tabasco
                     }
 
                     var dataDictionary = new Dictionary<string, string>();
+
+                    if (routeParameters.Count > 0)
+                    {
+                        dataDictionary = dataDictionary.Concat(routeParameters).ToDictionary(pair => pair.Key,
+                                                                                             pair => pair.Value);
+                    }
 
                     if (queryStringData != null)
                     {

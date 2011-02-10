@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ActionLoader_Specs.cs" />
     <Compile Include="Fiction.cs" />
+    <Compile Include="PatternParser_Specs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Razor_Specs.cs" />
     <Compile Include="ResourceLoader_Specs.cs" />
