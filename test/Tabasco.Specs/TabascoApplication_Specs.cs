@@ -60,6 +60,14 @@ namespace Tabasco.Specs
 
             Assert.AreEqual(200, response.Status);
         }
+
+        [Test]
+        public void It_Passes_Route_Parameters_As_Data()
+        {
+            var response = new MockRequest(new TabascoApplication()).Get("/params/test");
+
+            Assert.AreEqual("test", response.Body.ToString());
+        }
     }
 
     [Resource("/dork")]
@@ -90,6 +98,12 @@ namespace Tabasco.Specs
         public string PostData(IDictionary<string, string> data)
         {
             return data["testData"];
+        }
+
+        [Get("/params/:id")]
+        public string RouteParams(IDictionary<string, string> data)
+        {
+            return data[":id"];
         }
     }
 }

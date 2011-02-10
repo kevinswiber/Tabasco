@@ -5,6 +5,6 @@
 </head>
 <body>
     <h1>Ahoy, @Model.Name!</h1>
-    <a href="/doctor?who=@Model.Name">Click to see your secret message.</a>
+    <a href="/doctor/@NRack.Utils.Escape(Model.Name)">Click to see your secret message.</a>
 </body>
 </html>

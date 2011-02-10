@@ -58,7 +58,7 @@ namespace Tabasco
             {
                 Type modelType = _model.GetType();
                 //var viewType = typeof(SparkView<>).MakeGenericType(modelType);
-                typeName = "Tabasco.TemplateEngines.Spark.SparkView<" + modelType.FullName + ">";
+                typeName = "Tabasco.TemplateEngines.SparkView<" + modelType.FullName + ">";
             }
 
             var engine = new SparkViewEngine
