@@ -7,6 +7,8 @@ namespace Tabasco.Plumbing
 {
     public class ActionLoader
     {
+        private static IDictionary<string, MethodInfo> _actionMap;
+
         public static IDictionary<string, MethodInfo> LoadActionMap(IDictionary<Type, string> resourceMap)
         {
             var types = resourceMap.Keys;
@@ -26,7 +28,9 @@ namespace Tabasco.Plumbing
             // Add a newly created key-value pair to actionMap for each action
             actionMap = actions.Aggregate(actionMap, (current, action) => current.Concat(CreateActionMapItems(resourceMap, action)));
 
-            return actionMap.ToDictionary(pair => pair.Key, pair => pair.Value);
+            _actionMap = actionMap.ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            return _actionMap;
         }
 
         private static IEnumerable<MethodInfo> GetActions(Type type)
@@ -76,6 +80,16 @@ namespace Tabasco.Plumbing
         private static string GetHttpMethod(Type actionAttributeType)
         {
             return actionAttributeType.Name.Replace("Attribute", string.Empty).ToUpperInvariant();
+        }
+
+        public static IDictionary<string, MethodInfo> GetActionMap(IDictionary<Type, string> resourceMap)
+        {
+            if (_actionMap == null)
+            {
+                LoadActionMap(resourceMap);
+            }
+
+            return _actionMap;
         }
     }
 }

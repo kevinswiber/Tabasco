@@ -6,7 +6,9 @@ namespace Tabasco.Plumbing
 {
     public class ResourceLoader
     {
-        public static Dictionary<Type, string> LoadResourceMap()
+        private static IDictionary<Type, string> _resourceMap;
+
+        public static IDictionary<Type, string> LoadResourceMap()
         {
             var types = LoadFromAssemblies();
             IEnumerable<KeyValuePair<Type, string>> resourceMap = new Dictionary<Type, string>();
@@ -14,7 +16,9 @@ namespace Tabasco.Plumbing
             resourceMap = types.Aggregate(resourceMap,
                                           (current, resource) => current.Concat(new[] { CreateResourceMapItem(resource) }));
 
-            return resourceMap.ToDictionary(pair => pair.Key, pair => pair.Value);
+            _resourceMap = resourceMap.ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            return _resourceMap;
         }
 
         private static IEnumerable<Type> LoadFromAssemblies()
@@ -34,6 +38,16 @@ namespace Tabasco.Plumbing
             var resourceAttribute = (ResourceAttribute)resource.GetCustomAttributes(typeof(ResourceAttribute), false).First();
 
             return new KeyValuePair<Type, string>(resource, resourceAttribute.ResourceRoute);
+        }
+
+        public static IDictionary<Type, string> GetResourceMap()
+        {
+            if (_resourceMap == null)
+            {
+                LoadResourceMap();
+            }
+
+            return _resourceMap;
         }
     }
 }

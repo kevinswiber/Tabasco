@@ -15,8 +15,8 @@ namespace Tabasco
 
         public TabascoApplication()
         {
-            var resourceMap = ResourceLoader.LoadResourceMap();
-            _actionMap = ActionLoader.LoadActionMap(resourceMap);
+            var resourceMap = ResourceLoader.GetResourceMap();
+            _actionMap = ActionLoader.GetActionMap(resourceMap);
         }
 
         #region Implementation of ICallable
