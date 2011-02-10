@@ -48,21 +48,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionLoader.cs" />
-    <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Plumbing\ActionLoader.cs" />
+    <Compile Include="Plumbing\AssemblyScanner.cs" />
     <Compile Include="ActionAttribute.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Razor.cs" />
     <Compile Include="ResourceAttribute.cs" />
-    <Compile Include="ResourceLoader.cs" />
-    <Compile Include="RequestLine.cs" />
+    <Compile Include="Plumbing\ResourceLoader.cs" />
+    <Compile Include="Plumbing\RequestLine.cs" />
     <Compile Include="Spark.cs" />
-    <Compile Include="StackTracer.cs" />
+    <Compile Include="Plumbing\StackTracer.cs" />
     <Compile Include="TabascoApplication.cs" />
-    <Compile Include="UriExtensions.cs" />
-    <Compile Include="ViewEngines\Razor\RazorView.cs" />
-    <Compile Include="ViewEngines\Spark\SparkView.cs" />
+    <Compile Include="Plumbing\UriExtensions.cs" />
+    <Compile Include="TemplateEngines\RazorView.cs" />
+    <Compile Include="TemplateEngines\SparkView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

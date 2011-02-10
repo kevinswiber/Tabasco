@@ -1,4 +1,4 @@
-namespace Tabasco
+namespace Tabasco.Plumbing
 {
     public static class UriExtensions
     {

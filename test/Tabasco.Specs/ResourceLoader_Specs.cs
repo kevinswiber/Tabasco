@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Tabasco.Plumbing;
 
 namespace Tabasco.Specs
 {

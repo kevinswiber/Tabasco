@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using NRack;
 using NRack.Helpers;
+using Tabasco.Plumbing;
 
 namespace Tabasco
 {
