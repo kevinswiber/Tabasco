@@ -1,7 +1,7 @@
 using RazorEngine.Compilation;
 using RazorEngine.Templating;
 
-namespace Tabasco.ViewEngines.Razor
+namespace Tabasco.TemplateEngines
 {
     [HasDynamicModel]
     public class RazorView : TemplateBase<dynamic>

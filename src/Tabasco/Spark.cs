@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using Spark;
 using Spark.FileSystem;
-using Tabasco.ViewEngines.Spark;
+using Tabasco.Plumbing;
+using Tabasco.TemplateEngines;
 
 namespace Tabasco
 {
@@ -57,7 +58,7 @@ namespace Tabasco
             {
                 Type modelType = _model.GetType();
                 //var viewType = typeof(SparkView<>).MakeGenericType(modelType);
-                typeName = "Tabasco.ViewEngines.Spark.SparkView<" + modelType.FullName + ">";
+                typeName = "Tabasco.TemplateEngines.Spark.SparkView<" + modelType.FullName + ">";
             }
 
             var engine = new SparkViewEngine

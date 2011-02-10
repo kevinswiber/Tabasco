@@ -1,7 +1,7 @@
 
 using System;
 
-namespace Tabasco
+namespace Tabasco.Plumbing
 {
     public class RequestLine
     {

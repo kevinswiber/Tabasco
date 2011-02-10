@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Tabasco
+namespace Tabasco.Plumbing
 {
     public class AssemblyScanner
     {

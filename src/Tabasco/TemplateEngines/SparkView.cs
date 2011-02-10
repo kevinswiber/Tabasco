@@ -1,6 +1,6 @@
 using Spark;
 
-namespace Tabasco.ViewEngines.Spark
+namespace Tabasco.TemplateEngines
 {
     public abstract class SparkView : AbstractSparkView
     {
