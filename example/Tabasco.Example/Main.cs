@@ -30,7 +30,7 @@ namespace Tabasco.Example
         }
 
         [Post("/name")]
-        public string Name(IDictionary<string, string> data)
+        public string Name(IDictionary<string, dynamic> data)
         {
             var name = System.Web.HttpUtility.HtmlEncode(data["name"]);
 
@@ -41,7 +41,7 @@ namespace Tabasco.Example
         }
 
         [Get("/doctor")]
-        public dynamic[] Pepper(IDictionary<string, string> data)
+        public dynamic[] Pepper(IDictionary<string, dynamic> data)
         {
             var who = data.ContainsKey("who") ? data["who"] : "you";
 

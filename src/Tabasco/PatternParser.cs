@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Tabasco
@@ -8,6 +9,7 @@ namespace Tabasco
     {
         private readonly string _pattern;
         private readonly List<string> _keys;
+        const string CatchAllKey = "catch-all";
 
         public PatternParser(string pattern)
         {
@@ -35,9 +37,9 @@ namespace Tabasco
             return regex.IsMatch(line[1]);
         }
 
-        public IDictionary<string, string> Match(string url)
+        public dynamic Match(string url)
         {
-            var matches = new Dictionary<string, string>();
+            var matches = new Dictionary<string, dynamic>();
 
             var regex = new Regex(_pattern, RegexOptions.IgnoreCase);
 
@@ -47,8 +49,15 @@ namespace Tabasco
             {
                 for (var groupIndex = 1; groupIndex < groups.Count; groupIndex++)
                 {
-                    matches.Add(_keys[groupIndex - 1], groups[groupIndex].Value);
+                    var key = _keys[0] == CatchAllKey ? groupIndex.ToString() : _keys[groupIndex - 1];
+
+                    matches.Add(key, groups[groupIndex].Value);
                 }
+            }
+
+            if (_keys[0] == CatchAllKey)
+            {
+                return new Dictionary<string, dynamic> { { CatchAllKey, matches.Values.ToArray() } };
             }
 
             return matches;
@@ -61,15 +70,32 @@ namespace Tabasco
             Method = line[0];
             pattern = line[1];
 
-            var regex = new Regex(@":(\w+)", RegexOptions.IgnoreCase);
-
+            var regex = new Regex(@"(:(\w+))|\*", RegexOptions.IgnoreCase);
             var matches = regex.Matches(pattern);
+
+
+            var parsedPattern = pattern;
 
             for (var matchIndex = 0; matchIndex < matches.Count; matchIndex++)
             {
+                var value = matches[matchIndex].Value;
+
+                if (value == "*" && !_keys.Contains(CatchAllKey))
+                {
+                    _keys.Add(CatchAllKey);
+                    parsedPattern = regex.Replace(pattern, "(.*)");
+                    break;
+                }
+
                 _keys.Add(matches[matchIndex].Value);
             }
-            return regex.Replace(pattern, "([^/?#]+)");
+
+            if (!_keys.Contains(CatchAllKey))
+            {
+                parsedPattern = regex.Replace(parsedPattern, "([^/?#]+)");
+            }
+
+            return parsedPattern;
         }
     }
 }

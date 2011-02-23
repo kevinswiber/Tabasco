@@ -14,14 +14,14 @@ namespace Tabasco.Example.AspNet
         }
 
         [Post("/name")]
-        public IView Name(IDictionary<string, string> data)
+        public IView Name(IDictionary<string, dynamic> data)
         {
             return new Razor(new { Name = data["name"] });
         }
 
         [Get("/doctor")]
         [Get("/doctor/:who")]
-        public dynamic[] Pepper(IDictionary<string, string> data)
+        public dynamic[] Pepper(IDictionary<string, dynamic> data)
         {
             var who = data.ContainsKey(":who") ? NRack.Utils.Unescape(data[":who"]) : "you";
 

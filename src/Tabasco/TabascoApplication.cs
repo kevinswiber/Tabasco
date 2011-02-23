@@ -35,7 +35,7 @@ namespace Tabasco
             var requestLineStripped = requestLine.ToString().StripQueryString();
 
             string actionKey = requestLineStripped;
-            IDictionary<string, string> routeParameters = new Dictionary<string, string>();
+            IDictionary<string, dynamic> routeParameters = new Dictionary<string, dynamic>();
 
             if (!_actionMap.ContainsKey(actionKey))
             {
@@ -64,7 +64,7 @@ namespace Tabasco
 
             if (methodInfo.GetParameters().Length > 0)
             {
-                if (methodInfo.GetParameters()[0].ParameterType == typeof(IDictionary<string, string>))
+                if (methodInfo.GetParameters()[0].ParameterType == typeof(IDictionary<string, dynamic>))
                 {
                     NameValueCollection queryStringData = null;
 
@@ -73,7 +73,7 @@ namespace Tabasco
                         queryStringData = Utils.ParseQuery(requestLine.QueryString);
                     }
 
-                    var dataDictionary = new Dictionary<string, string>();
+                    var dataDictionary = new Dictionary<string, dynamic>();
 
                     if (routeParameters.Count > 0)
                     {
