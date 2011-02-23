@@ -23,5 +23,23 @@ namespace Tabasco.Specs
 
             Assert.AreEqual("usa", matches[":country"]);
         }
+
+        [Test]
+        public void It_Should_Parse_A_Single_Catch_All()
+        {
+            var parser = new PatternParser("GET /catchy/*");
+            var matches = parser.Match("GET /catchy/tune");
+
+            Assert.AreEqual("tune", matches["catch-all"][0]);
+        }
+
+        [Test]
+        public void It_Should_Parse_Multiple_Catch_All_Values()
+        {
+            var parser = new PatternParser("GET /catchy/*/*/*");
+            var matches = parser.Match("GET /catchy/tunes/from/radio");
+
+            Assert.AreEqual(new[] { "tunes", "from", "radio" }, matches["catch-all"]);
+        }
     }
 }

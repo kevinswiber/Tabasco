@@ -36,6 +36,7 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\lib\nrack\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NRack">
       <HintPath>..\..\lib\nrack\NRack.dll</HintPath>
     </Reference>

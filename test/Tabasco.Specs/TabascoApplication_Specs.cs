@@ -89,19 +89,19 @@ namespace Tabasco.Specs
         }
 
         [Get("/data")]
-        public string GetData(IDictionary<string, string> data)
+        public string GetData(IDictionary<string, dynamic> data)
         {
             return data["testData"];
         }
 
         [Post("/post")]
-        public string PostData(IDictionary<string, string> data)
+        public string PostData(IDictionary<string, dynamic> data)
         {
             return data["testData"];
         }
 
         [Get("/params/:id")]
-        public string RouteParams(IDictionary<string, string> data)
+        public string RouteParams(IDictionary<string, dynamic> data)
         {
             return data[":id"];
         }
