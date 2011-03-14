@@ -4,34 +4,31 @@ Tabasco is a simple Web framework that drops a little spice on top of NRack.
 
 Example
 ---------
-    [Resource("/")]
-    public class Main
+    public class App : TabascoBase
     {
-      [Get]
-      public string Root()
-      {
-        return "Hello, Tabasco!";
-      }
+        [Get]
+        public IView Index()
+        {
+            return new Spark();
+        }
 
-      [Get("/doctor")]
-      public dynamic[] Pepper()
-      {
-        return new dynamic[]
-         {
-           200, 
-           new Hash { { "Content-Type", "text/plain" } }, 
-           "Wouldn't you like to be a pepper, too?"
-         };
-      }
-    }
+        [Post("/name")]
+        public IView Name()
+        {
+            return new Razor(new { Name = Request.Params["name"] });
+        }
 
-Philosophy
-----------
-* URL's matter!
-* Testing should be easy.
-* The HTTP Pipeline should be open for middleware.
+        [Get("/doctor")]
+        [Get("/doctor/:who")]
+        public dynamic[] Pepper()
+        {
+            var who = Request.Params.ContainsKey(":who") ? Request.Params[":who"] : "you";
 
+            return new dynamic[]
+                       {
+                           200, 
+                           new Hash { { "Content-Type", "text/plain" } }, 
+                           "Wouldn't " + who + " like to be a pepper, too?"
+                       };
+        }
 
-Todo
--------
-* Stronger URL routing with named parameters.
