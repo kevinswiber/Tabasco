@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Request.cs" />
     <Compile Include="PatternParser.cs" />
     <Compile Include="Plumbing\ActionLoader.cs" />
     <Compile Include="Plumbing\AssemblyScanner.cs" />

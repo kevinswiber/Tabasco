@@ -8,8 +8,6 @@ namespace Tabasco.Example.AspNet
 {
     public class Config : ConfigBase
     {
-        #region Overrides of ConfigBase
-
         public override void Start()
         {
             Use<Static>(new Hash
@@ -17,9 +15,7 @@ namespace Tabasco.Example.AspNet
                                 {"urls", new[] {"/styles"}}, 
                                 {"root", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public")}
                             })
-            .Run(new TabascoApplication());
+            .Run(new App());
         }
-
-        #endregion
     }
 }

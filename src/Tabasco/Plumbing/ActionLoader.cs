@@ -91,5 +91,10 @@ namespace Tabasco.Plumbing
 
             return _actionMap;
         }
+
+        public static IDictionary<string, MethodInfo> GetActionMap(Type type)
+        {
+            return GetActionMap(new Dictionary<Type, string> { { type, "/" } });
+        }
     }
 }
