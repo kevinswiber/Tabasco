@@ -6,11 +6,10 @@ namespace Tabasco.Plumbing
     public class RequestLine
     {
         public string Method { get; set; }
-        public string ScriptName { get; set; }
         public string PathInfo { get; set; }
         public string QueryString { get; set; }
 
-        public static RequestLine Create(string method, string scriptName, string pathInfo = null, string queryString = null)
+        public static RequestLine Create(string method, string pathInfo = null, string queryString = null)
         {
             if (method == null)
             {
@@ -27,11 +26,6 @@ namespace Tabasco.Plumbing
                 queryString = string.Empty;
             }
 
-            if (scriptName.EndsWith("/"))
-            {
-                scriptName = scriptName.Remove(scriptName.Length - 1);
-            }
-
             if (pathInfo != string.Empty && !pathInfo.StartsWith("/"))
             {
                 pathInfo = "/" + pathInfo;
@@ -45,7 +39,6 @@ namespace Tabasco.Plumbing
             var requestLine = new RequestLine
                                   {
                                       Method = method,
-                                      ScriptName = scriptName,
                                       PathInfo = pathInfo,
                                       QueryString = queryString
                                   };
@@ -58,7 +51,7 @@ namespace Tabasco.Plumbing
         {
             var queryString = QueryString == string.Empty ? string.Empty : "?" + QueryString;
 
-            var uri = ScriptName + PathInfo + queryString;
+            var uri = PathInfo + queryString;
 
             if (!uri.StartsWith("/"))
             {

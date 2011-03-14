@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -10,28 +9,39 @@ using Tabasco.Plumbing;
 
 namespace Tabasco
 {
-    public class TabascoApplication : ICallable
+    public class TabascoApplication : TabascoBase
+    {
+
+    }
+    public class TabascoBase : ICallable
     {
         private readonly IDictionary<string, MethodInfo> _actionMap;
 
-        public TabascoApplication()
+        public Request Request { get; private set; }
+
+        public TabascoBase()
         {
-            var resourceMap = ResourceLoader.GetResourceMap();
-            _actionMap = ActionLoader.GetActionMap(resourceMap);
+            //var resourceMap = ResourceLoader.GetResourceMap();
+            //_actionMap = ActionLoader.GetActionMap(resourceMap);
+            _actionMap = ActionLoader.GetActionMap(GetType());
             _actionMap = _actionMap.OrderByDescending(x => x.Key.Length).ToDictionary(pair => pair.Key,
                                                                                       pair => pair.Value);
         }
 
-        #region Implementation of ICallable
-
         public dynamic[] Call(IDictionary<string, dynamic> environment)
         {
+            return CallInternal(environment);
+        }
+
+        public dynamic[] CallInternal(IDictionary<string, dynamic> environment)
+        {
+            Request = new Request(environment);
+
             string method = environment["REQUEST_METHOD"].ToString();
-            string scriptName = environment["SCRIPT_NAME"].ToString();
             string pathInfo = environment["PATH_INFO"].ToString();
             string queryString = environment["QUERY_STRING"].ToString();
 
-            var requestLine = RequestLine.Create(method, scriptName, pathInfo, queryString);
+            var requestLine = RequestLine.Create(method, pathInfo, queryString);
             var requestLineStripped = requestLine.ToString().StripQueryString();
 
             string actionKey = requestLineStripped;
@@ -58,60 +68,50 @@ namespace Tabasco
 
             var methodInfo = _actionMap[actionKey];
 
-            var resource = Activator.CreateInstance(methodInfo.DeclaringType);
+            NameValueCollection queryStringData = null;
 
-            object[] parameters = null;
-
-            if (methodInfo.GetParameters().Length > 0)
+            if (!string.IsNullOrEmpty(requestLine.QueryString))
             {
-                if (methodInfo.GetParameters()[0].ParameterType == typeof(IDictionary<string, dynamic>))
+                queryStringData = Utils.ParseQuery(requestLine.QueryString);
+            }
+
+            var dataDictionary = new Dictionary<string, dynamic>();
+
+            if (routeParameters.Count > 0)
+            {
+                dataDictionary = dataDictionary.Concat(routeParameters).ToDictionary(pair => pair.Key,
+                                                                                     pair => pair.Value);
+            }
+
+            if (queryStringData != null)
+            {
+                foreach (var key in queryStringData.Keys)
                 {
-                    NameValueCollection queryStringData = null;
-
-                    if (!string.IsNullOrEmpty(requestLine.QueryString))
-                    {
-                        queryStringData = Utils.ParseQuery(requestLine.QueryString);
-                    }
-
-                    var dataDictionary = new Dictionary<string, dynamic>();
-
-                    if (routeParameters.Count > 0)
-                    {
-                        dataDictionary = dataDictionary.Concat(routeParameters).ToDictionary(pair => pair.Key,
-                                                                                             pair => pair.Value);
-                    }
-
-                    if (queryStringData != null)
-                    {
-                        foreach (var key in queryStringData.Keys)
-                        {
-                            dataDictionary[key.ToString()] = queryStringData[key.ToString()];
-                        }
-                    }
-
-                    if (environment["rack.input"] != null)
-                    {
-                        var stream = (Stream)environment["rack.input"];
-
-                        stream.Position = 0;
-
-                        var streamReader = new StreamReader(stream);
-
-                        var requestBody = streamReader.ReadToEnd();
-
-                        var postData = Utils.ParseQuery(requestBody);
-
-                        foreach (var key in postData.Keys)
-                        {
-                            dataDictionary[key.ToString()] = postData[key.ToString()];
-                        }
-                    }
-
-                    parameters = new[] { dataDictionary };
+                    dataDictionary[key.ToString()] = queryStringData[key.ToString()];
                 }
             }
 
-            var actionResponse = methodInfo.Invoke(resource, parameters);
+            if (environment["rack.input"] != null)
+            {
+                var stream = (Stream)environment["rack.input"];
+
+                stream.Position = 0;
+
+                var streamReader = new StreamReader(stream);
+
+                var requestBody = streamReader.ReadToEnd();
+
+                var postData = Utils.ParseQuery(requestBody);
+
+                foreach (var key in postData.Keys)
+                {
+                    dataDictionary[key.ToString()] = postData[key.ToString()];
+                }
+            }
+
+            Request.Params = Request.Params.Concat(dataDictionary).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            var actionResponse = methodInfo.Invoke(this, null);
 
             if (actionResponse is string || actionResponse is IIterable)
             {
@@ -125,7 +125,5 @@ namespace Tabasco
 
             return new dynamic[] { 500, new Hash { { "Content-Type", "text/plain" } }, "Internal server error." };
         }
-
-        #endregion
     }
 }
