@@ -9,11 +9,6 @@ using Tabasco.Plumbing;
 
 namespace Tabasco
 {
-    public class TabascoApplication : TabascoBase
-    {
-
-    }
-
     public class TabascoBase : ICallable
     {
         private readonly IDictionary<string, MethodInfo> _actionMap;

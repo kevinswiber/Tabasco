@@ -58,7 +58,7 @@
     <Compile Include="Plumbing\RequestLine.cs" />
     <Compile Include="Spark.cs" />
     <Compile Include="Plumbing\StackTracer.cs" />
-    <Compile Include="TabascoApplication.cs" />
+    <Compile Include="TabascoBase.cs" />
     <Compile Include="Plumbing\UriExtensions.cs" />
     <Compile Include="TemplateEngines\RazorView.cs" />
     <Compile Include="TemplateEngines\SparkView.cs" />

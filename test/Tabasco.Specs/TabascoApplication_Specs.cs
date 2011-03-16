@@ -12,7 +12,7 @@ namespace Tabasco.Specs
         [Test]
         public void It_Is_Callable()
         {
-            Assert.IsTrue(typeof(ICallable).IsAssignableFrom(typeof(TabascoApplication)));
+            Assert.IsTrue(typeof(ICallable).IsAssignableFrom(typeof(TestApplication)));
         }
 
         [Test]
