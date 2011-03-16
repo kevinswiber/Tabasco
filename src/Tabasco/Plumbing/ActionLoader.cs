@@ -38,7 +38,7 @@ namespace Tabasco.Plumbing
             return type.GetMethods().Where(
                 methodInfo => methodInfo
                     .GetCustomAttributes(false)
-                    .Where(attr => typeof(ActionAttribute).IsAssignableFrom(attr.GetType()))
+                    .Where(attr => typeof(RequestMethodAttribute).IsAssignableFrom(attr.GetType()))
                     .Any());
         }
 
@@ -46,12 +46,12 @@ namespace Tabasco.Plumbing
         {
             var actionAttributes =
                 action.GetCustomAttributes(false).Where(
-                    attr => typeof(ActionAttribute).IsAssignableFrom(attr.GetType()));
+                    attr => typeof(RequestMethodAttribute).IsAssignableFrom(attr.GetType()));
 
             var resourceRoute = resourceMap[action.DeclaringType];
 
             return
-                from ActionAttribute actionAttr in actionAttributes
+                from RequestMethodAttribute actionAttr in actionAttributes
                 select new KeyValuePair<string, MethodInfo>(FormatRoute(GetHttpMethod(actionAttr.GetType()), resourceRoute, actionAttr.ActionRoute), action);
         }
 
@@ -84,10 +84,10 @@ namespace Tabasco.Plumbing
 
         public static IDictionary<string, MethodInfo> GetActionMap(IDictionary<Type, string> resourceMap)
         {
-            if (_actionMap == null)
-            {
-                LoadActionMap(resourceMap);
-            }
+            //if (_actionMap == null)
+            //{
+            LoadActionMap(resourceMap);
+            //}
 
             return _actionMap;
         }

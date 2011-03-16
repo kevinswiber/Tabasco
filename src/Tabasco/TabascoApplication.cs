@@ -13,6 +13,7 @@ namespace Tabasco
     {
 
     }
+
     public class TabascoBase : ICallable
     {
         private readonly IDictionary<string, MethodInfo> _actionMap;
@@ -21,8 +22,6 @@ namespace Tabasco
 
         public TabascoBase()
         {
-            //var resourceMap = ResourceLoader.GetResourceMap();
-            //_actionMap = ActionLoader.GetActionMap(resourceMap);
             _actionMap = ActionLoader.GetActionMap(GetType());
             _actionMap = _actionMap.OrderByDescending(x => x.Key.Length).ToDictionary(pair => pair.Key,
                                                                                       pair => pair.Value);

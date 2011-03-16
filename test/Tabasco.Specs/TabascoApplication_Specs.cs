@@ -18,7 +18,7 @@ namespace Tabasco.Specs
         [Test]
         public void It_Processes_Requests()
         {
-            var response = new MockRequest(new TabascoApplication()).Get("/");
+            var response = new MockRequest(new TestApplication()).Get("/");
 
             Assert.AreEqual(200, response.Status);
             Assert.AreEqual("Bam!", response.Body.ToString());
@@ -28,7 +28,7 @@ namespace Tabasco.Specs
         public void It_Loads_As_An_NRack_Application()
         {
             var builder = new Builder()
-                .Run(new TabascoApplication())
+                .Run(new TestApplication())
                 .ToApp();
 
             var response = builder.Call(new MockRequest().EnvironmentFor("/"));
@@ -39,7 +39,7 @@ namespace Tabasco.Specs
         [Test]
         public void It_Passes_Query_String_Data_Into_Action()
         {
-            var response = new MockRequest(new TabascoApplication()).Get("/data?testData=horticulture");
+            var response = new MockRequest(new TestApplication()).Get("/data?testData=horticulture");
 
             Assert.AreEqual("horticulture", response.Body.ToString());
         }
@@ -47,40 +47,22 @@ namespace Tabasco.Specs
         [Test]
         public void It_Passes_Form_Post_Data_Into_Action()
         {
-            var response = new MockRequest(new TabascoApplication()).Post("/post",
+            var response = new MockRequest(new TestApplication()).Post("/post",
                                                                          new Dictionary<string, dynamic> { { "input", "testData=horticulture" } });
 
             Assert.AreEqual("horticulture", response.Body.ToString());
         }
 
         [Test]
-        public void It_Routes_To_Non_Root_Resources()
-        {
-            var response = new MockRequest(new TabascoApplication()).Get("/dork");
-
-            Assert.AreEqual(200, response.Status);
-        }
-
-        [Test]
         public void It_Passes_Route_Parameters_As_Data()
         {
-            var response = new MockRequest(new TabascoApplication()).Get("/params/test");
+            var response = new MockRequest(new TestApplication()).Get("/params/test");
 
             Assert.AreEqual("test", response.Body.ToString());
         }
     }
 
-    [Resource("/dork")]
-    public class DorkController
-    {
-        [Get]
-        public string Root()
-        {
-            return "Yo.";
-        }
-    }
-    [Resource("/")]
-    public class TestController
+    public class TestApplication : TabascoBase
     {
         [Get]
         public dynamic[] GetSpicy()
@@ -89,21 +71,21 @@ namespace Tabasco.Specs
         }
 
         [Get("/data")]
-        public string GetData(IDictionary<string, dynamic> data)
+        public string GetData()
         {
-            return data["testData"];
+            return Request.Params["testData"];
         }
 
         [Post("/post")]
-        public string PostData(IDictionary<string, dynamic> data)
+        public string PostData()
         {
-            return data["testData"];
+            return Request.Params["testData"];
         }
 
         [Get("/params/:id")]
-        public string RouteParams(IDictionary<string, dynamic> data)
+        public string RouteParams()
         {
-            return data[":id"];
+            return Request.Params[":id"];
         }
     }
 }
