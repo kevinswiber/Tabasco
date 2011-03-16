@@ -3,11 +3,11 @@ using System;
 namespace Tabasco
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class ActionAttribute : Attribute
+    public abstract class RequestMethodAttribute : Attribute
     {
-        protected ActionAttribute() : this(string.Empty) { }
+        protected RequestMethodAttribute() : this(string.Empty) { }
 
-        protected ActionAttribute(string actionRoute)
+        protected RequestMethodAttribute(string actionRoute)
         {
             ActionRoute = actionRoute;
         }
@@ -15,7 +15,7 @@ namespace Tabasco
         public string ActionRoute { get; set; }
     }
 
-    public class GetAttribute : ActionAttribute
+    public class GetAttribute : RequestMethodAttribute
     {
         public GetAttribute()
         { }
@@ -25,7 +25,7 @@ namespace Tabasco
         { }
     }
 
-    public class PostAttribute : ActionAttribute
+    public class PostAttribute : RequestMethodAttribute
     {
         public PostAttribute()
         { }
@@ -35,7 +35,7 @@ namespace Tabasco
         { }
     }
 
-    public class PutAttribute : ActionAttribute
+    public class PutAttribute : RequestMethodAttribute
     {
         public PutAttribute()
         { }
@@ -45,7 +45,7 @@ namespace Tabasco
         { }
     }
 
-    public class DeleteAttribute : ActionAttribute
+    public class DeleteAttribute : RequestMethodAttribute
     {
         public DeleteAttribute()
         { }
@@ -55,7 +55,7 @@ namespace Tabasco
         { }
     }
 
-    public class HeadAttribute : ActionAttribute
+    public class HeadAttribute : RequestMethodAttribute
     {
         public HeadAttribute()
         { }

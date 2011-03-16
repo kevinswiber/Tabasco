@@ -1,6 +1,5 @@
 ﻿namespace Tabasco.Specs
 {
-    [Resource("/book/fiction")]
     public class Fiction
     {
         [Get("/")]

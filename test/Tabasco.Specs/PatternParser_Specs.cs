@@ -16,6 +16,16 @@ namespace Tabasco.Specs
         }
 
         [Test]
+        public void It_Should_Parse_Values_Unescaped()
+        {
+            var parser = new PatternParser("GET /:token");
+
+            var matches = parser.Match("GET /Kevin+Swiber");
+
+            Assert.AreEqual("Kevin Swiber", matches[":token"]);
+        }
+
+        [Test]
         public void It_Should_Parse_Multiple_Named_Tokens()
         {
             var parser = new PatternParser("GET /locator/:country/:state/:city");
@@ -30,7 +40,7 @@ namespace Tabasco.Specs
             var parser = new PatternParser("GET /catchy/*");
             var matches = parser.Match("GET /catchy/tune");
 
-            Assert.AreEqual("tune", matches["catch-all"][0]);
+            Assert.AreEqual("tune", matches[":splat"][0]);
         }
 
         [Test]
@@ -39,7 +49,7 @@ namespace Tabasco.Specs
             var parser = new PatternParser("GET /catchy/*/*/*");
             var matches = parser.Match("GET /catchy/tunes/from/radio");
 
-            Assert.AreEqual(new[] { "tunes", "from", "radio" }, matches["catch-all"]);
+            Assert.AreEqual(new[] { "tunes", "from", "radio" }, matches[":splat"]);
         }
     }
 }

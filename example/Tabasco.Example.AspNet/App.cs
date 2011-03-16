@@ -20,7 +20,7 @@ namespace Tabasco.Example.AspNet
         [Get("/doctor/:who")]
         public dynamic[] Pepper()
         {
-            var who = Request.Params.ContainsKey(":who") ? NRack.Utils.Unescape(Request.Params[":who"]) : "you";
+            var who = Request.Params.ContainsKey(":who") ? Request.Params[":who"] : "you";
 
             return new dynamic[]
                        {

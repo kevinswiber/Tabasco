@@ -9,7 +9,7 @@ namespace Tabasco
     {
         private readonly string _pattern;
         private readonly List<string> _keys;
-        const string CatchAllKey = "catch-all";
+        const string CatchAllKey = ":splat";
 
         public PatternParser(string pattern)
         {
@@ -51,7 +51,7 @@ namespace Tabasco
                 {
                     var key = _keys[0] == CatchAllKey ? groupIndex.ToString() : _keys[groupIndex - 1];
 
-                    matches.Add(key, groups[groupIndex].Value);
+                    matches.Add(key, NRack.Utils.Unescape(groups[groupIndex].Value));
                 }
             }
 
