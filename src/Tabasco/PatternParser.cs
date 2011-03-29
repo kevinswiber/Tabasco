@@ -9,7 +9,7 @@ namespace Tabasco
     {
         private readonly string _pattern;
         private readonly List<string> _keys;
-        const string CatchAllKey = ":splat";
+        const string CatchAllKey = ":star";
 
         public PatternParser(string pattern)
         {

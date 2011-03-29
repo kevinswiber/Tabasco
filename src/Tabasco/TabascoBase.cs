@@ -14,6 +14,7 @@ namespace Tabasco
         private readonly IDictionary<string, MethodInfo> _actionMap;
 
         public Request Request { get; private set; }
+        public IDictionary<string, dynamic> Params { get; set; }
 
         public TabascoBase()
         {
@@ -77,14 +78,6 @@ namespace Tabasco
                                                                                      pair => pair.Value);
             }
 
-            if (queryStringData != null)
-            {
-                foreach (var key in queryStringData.Keys)
-                {
-                    dataDictionary[key.ToString()] = queryStringData[key.ToString()];
-                }
-            }
-
             if (environment["rack.input"] != null)
             {
                 var stream = (Stream)environment["rack.input"];
@@ -103,7 +96,9 @@ namespace Tabasco
                 }
             }
 
-            Request.Params = Request.Params.Concat(dataDictionary).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var requestParams = Request.Params.ToDictionary(kvp => kvp.Key, kvp => (dynamic)kvp.Value);
+            Params = requestParams.Concat(dataDictionary)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var actionResponse = methodInfo.Invoke(this, null);
 

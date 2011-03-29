@@ -73,19 +73,19 @@ namespace Tabasco.Specs
         [Get("/data")]
         public string GetData()
         {
-            return Request.Params["testData"];
+            return Params["testData"];
         }
 
         [Post("/post")]
         public string PostData()
         {
-            return Request.Params["testData"];
+            return Params["testData"];
         }
 
         [Get("/params/:id")]
         public string RouteParams()
         {
-            return Request.Params[":id"];
+            return Params[":id"];
         }
     }
 }
