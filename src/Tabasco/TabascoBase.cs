@@ -63,37 +63,12 @@ namespace Tabasco
 
             var methodInfo = _actionMap[actionKey];
 
-            NameValueCollection queryStringData = null;
-
-            if (!string.IsNullOrEmpty(requestLine.QueryString))
-            {
-                queryStringData = Utils.ParseQuery(requestLine.QueryString);
-            }
-
             var dataDictionary = new Dictionary<string, dynamic>();
 
             if (routeParameters.Count > 0)
             {
                 dataDictionary = dataDictionary.Concat(routeParameters).ToDictionary(pair => pair.Key,
                                                                                      pair => pair.Value);
-            }
-
-            if (environment["rack.input"] != null)
-            {
-                var stream = (Stream)environment["rack.input"];
-
-                stream.Position = 0;
-
-                var streamReader = new StreamReader(stream);
-
-                var requestBody = streamReader.ReadToEnd();
-
-                var postData = Utils.ParseQuery(requestBody);
-
-                foreach (var key in postData.Keys)
-                {
-                    dataDictionary[key.ToString()] = postData[key.ToString()];
-                }
             }
 
             var requestParams = Request.Params.ToDictionary(kvp => kvp.Key, kvp => (dynamic)kvp.Value);
