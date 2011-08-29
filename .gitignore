@@ -28,3 +28,7 @@ httpd.parse.errors
 
 # Office Temp Files
 ~$* 
+
+*_mm_cache.bin
+*.pidb
+*.userprefs
