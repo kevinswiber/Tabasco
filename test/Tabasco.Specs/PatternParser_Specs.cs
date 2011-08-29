@@ -40,7 +40,7 @@ namespace Tabasco.Specs
             var parser = new PatternParser("GET /catchy/*");
             var matches = parser.Match("GET /catchy/tune");
 
-            Assert.AreEqual("tune", matches[":splat"][0]);
+            Assert.AreEqual("tune", matches[":star"][0]);
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Tabasco.Specs
             var parser = new PatternParser("GET /catchy/*/*/*");
             var matches = parser.Match("GET /catchy/tunes/from/radio");
 
-            Assert.AreEqual(new[] { "tunes", "from", "radio" }, matches[":splat"]);
+            Assert.AreEqual(new[] { "tunes", "from", "radio" }, matches[":star"]);
         }
     }
 }

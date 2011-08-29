@@ -7,9 +7,6 @@ namespace Tabasco
         public Request(IDictionary<string, dynamic> env)
             : base(env)
         {
-            Params = new Dictionary<string, dynamic>();
         }
-
-        public IDictionary<string, dynamic> Params { get; set; }
     }
 }

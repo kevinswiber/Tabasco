@@ -32,18 +32,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NRack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nrack\NRack.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
+    <Reference Include="System">
+    </Reference>
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+    </Reference>
+    <Reference Include="RazorEngine, Version=2.1.4039.23635, Culture=neutral, PublicKeyToken=1f722ed313f51831">
       <HintPath>..\..\lib\razor\RazorEngine.dll</HintPath>
     </Reference>
-    <Reference Include="Spark">
+    <Reference Include="Spark, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7f8549eed921a12c">
       <HintPath>..\..\lib\spark\Spark.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\..\lib\razor\System.Web.Razor.dll</HintPath>
     </Reference>
   </ItemGroup>

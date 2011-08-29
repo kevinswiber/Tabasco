@@ -14,6 +14,7 @@ namespace Tabasco
         private readonly IDictionary<string, MethodInfo> _actionMap;
 
         public Request Request { get; private set; }
+        public IDictionary<string, dynamic> Params { get; set; }
 
         public TabascoBase()
         {
@@ -62,13 +63,6 @@ namespace Tabasco
 
             var methodInfo = _actionMap[actionKey];
 
-            NameValueCollection queryStringData = null;
-
-            if (!string.IsNullOrEmpty(requestLine.QueryString))
-            {
-                queryStringData = Utils.ParseQuery(requestLine.QueryString);
-            }
-
             var dataDictionary = new Dictionary<string, dynamic>();
 
             if (routeParameters.Count > 0)
@@ -77,33 +71,9 @@ namespace Tabasco
                                                                                      pair => pair.Value);
             }
 
-            if (queryStringData != null)
-            {
-                foreach (var key in queryStringData.Keys)
-                {
-                    dataDictionary[key.ToString()] = queryStringData[key.ToString()];
-                }
-            }
-
-            if (environment["rack.input"] != null)
-            {
-                var stream = (Stream)environment["rack.input"];
-
-                stream.Position = 0;
-
-                var streamReader = new StreamReader(stream);
-
-                var requestBody = streamReader.ReadToEnd();
-
-                var postData = Utils.ParseQuery(requestBody);
-
-                foreach (var key in postData.Keys)
-                {
-                    dataDictionary[key.ToString()] = postData[key.ToString()];
-                }
-            }
-
-            Request.Params = Request.Params.Concat(dataDictionary).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var requestParams = Request.Params.ToDictionary(kvp => kvp.Key, kvp => (dynamic)kvp.Value);
+            Params = requestParams.Concat(dataDictionary)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var actionResponse = methodInfo.Invoke(this, null);
 
